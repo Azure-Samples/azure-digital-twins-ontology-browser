@@ -1,57 +1,21 @@
-# Project Name
+# Azure Digital Twins Ontology Browser
 
-(short, 1-3 sentenced, description of the project)
+The Azure Digital Twins Ontology Browser sample comprises of two web applications (ui and api) and azure cognitive search. When deployed this application allows users to Search, Browse and Vizualize Open Source Digital Twins ontologies found on Github.
 
-## Features
+## Contents
 
-This project framework provides the following features:
-
-* Feature 1
-* Feature 2
-* ...
+| Directory | Description |
+|----------|-------------|
+| [src/ui](./src/ui/README.md) | The UI application |
+| [src/api](./src/api/README.md) | The API application |
+| [deployment](./deployment/README.md) | Deployment instructions |
 
 ## Getting Started
 
-### Prerequisites
+To deploy the required resources for the sample by following the instructions in the [deployment](./deployment/README.md) directory.
 
-(ideally very short, if any)
+This will deploy the following architecture into a resource group of your choice.
 
-- OS
-- Library version
-- ...
-
-### Installation
-
-(ideally very short)
-
-- npm install [package name]
-- mvn install
-- ...
-
-### Quickstart
-(Add steps to get up and running quickly)
-
-1. git clone [repository clone url]
-2. cd [repository name]
-3. ...
+![Architecture](./documents/architecture.png)
 
 
-## Demo
-
-A demo app is included to show how to use the project.
-
-To run the demo, follow these steps:
-
-(Add steps to start up the demo)
-
-1.
-2.
-3.
-
-## Resources
-
-(Any additional resources or related projects)
-
-- Link to supporting information
-- Link to similar sample
-- ...
