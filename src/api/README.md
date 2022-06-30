@@ -47,5 +47,5 @@ Once this is done you can deploy the API Container to Azure using the steps belo
 Once deployed the API initiates an ontology index and indexes all ontologies found on Github in the Azure Cognitive Search. This may take a minute or two - you can see the state of the indexes by navigating to the following URL:
 
     ```cmd
-    https://your-api.azurewebsites.net/indexStatus
+    https://your-api.azurewebsites.net/indexState
     ```
