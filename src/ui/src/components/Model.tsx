@@ -73,7 +73,8 @@ const ContentElement = ({ content, onOpenModel }) => {
         <Kvp
           keyName={"Targets"}
           value={content.target}
-          className="flex flex-row"
+          className="flex flex-row cursor-pointer"
+          onClick={() => onOpenModel(content.target)}
         />
       )}
       {content["@type"] === "Component" && (
