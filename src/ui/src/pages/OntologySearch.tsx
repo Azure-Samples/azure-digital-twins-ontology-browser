@@ -164,6 +164,7 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
         selectedResult.id.split("/")[2]
       );
     } else setSelectedModel(null);
+    // eslint-disable-next-line
   }, [selectedResult, setSelectedModel]);
 
   const onSearch = async (newVal?: string) => {
@@ -189,6 +190,7 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
       }
     };
     doSearch(searchString);
+    // eslint-disable-next-line
   }, [searchString, setSearchResults, setSelectedOntology]);
 
   const clearSearchResults = () => {

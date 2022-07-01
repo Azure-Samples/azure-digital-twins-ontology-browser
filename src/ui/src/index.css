@@ -255,9 +255,11 @@ summary::marker{
   margin-left: -20px;
   line-height: $lh-condensed-ultra;
 
-  :focus {
-    outline: none;
-  }
+
+}
+
+.markdown-body.anchor:focus {
+  outline: none;
 }
 
 .markdown-body p,

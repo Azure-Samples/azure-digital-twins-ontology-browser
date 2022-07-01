@@ -10,27 +10,85 @@ export interface IModelProps {
 }
 
 const ComplexSchema = ({ complexSchema }) => {
-  const type = complexSchema["@type"];
+  const type = complexSchema["@type"] ?? complexSchema.schema;
   const isEnum = type.includes("Enum");
-  const enumValues = complexSchema["dtmi:dtdl:property:enumValues;2"];
-  console.log(enumValues);
+  const enumValues =
+    complexSchema["dtmi:dtdl:property:enumValues;2"] ??
+    complexSchema.enumValues ??
+    [];
+  const isMap = type.includes("Map");
+  const mapKey =
+    complexSchema["dtmi:dtdl:property:mapKey;2"] ?? complexSchema.mapKey ?? "";
+  const mapValue =
+    complexSchema["dtmi:dtdl:property:mapValue;2"] ??
+    complexSchema.mapValue ??
+    "";
   return (
     <div>
       <div>
         <span className=" leading-6 font-medium text-gray-900">{type}</span>
       </div>
-      {isEnum &&
-        enumValues &&
-        enumValues.map((ev) => (
-          <div>
-            <span className=" leading-6 font-light text-gray-900">
-              {ev.name} ={" "}
+      <div>
+        <span className=" leading-6 font-light text-gray-900">
+          {complexSchema.description}
+        </span>
+      </div>
+      <div>
+        <span className=" leading-6 font-light italic text-gray-900">
+          {complexSchema.comment}
+        </span>
+      </div>
+      {isEnum && enumValues && (
+        <table className="w-full border m-4">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Value</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {enumValues.map((ev) => (
+              <tr
+                className=" hover:bg-slate-100 border-t cursor-default"
+                title={ev.enumValue}
+              >
+                <td className="px-2 py-3 leading-6 font-medium text-gray-900">
+                  {ev.name}
+                </td>
+                <td className="px-2 leading-6 font-medium text-gray-900">
+                  {ev.enumValue}
+                </td>
+                <td className=" leading-6 font-light text-gray-900">
+                  {ev.description}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {isMap && mapKey && mapValue && (
+        <>
+          <div className="py-3">
+            <span className=" leading-6 font-medium text-gray-900">Key</span>
+            <span className=" leading-6 font-light px-2 text-gray-900">
+              {mapKey.name}
             </span>
-            <span className=" leading-6 font-medium text-gray-900">
-              {ev.enumValue}
+            <span className=" leading-6 font-light px-2 text-gray-900">
+              {mapKey.schema}
             </span>
           </div>
-        ))}
+          <div className="py-3">
+            <span className=" leading-6 font-medium text-gray-900">Value</span>
+            <span className=" leading-6 font-light px-2 text-gray-900">
+              {mapValue.name}
+            </span>
+            <span className=" leading-6 font-light px-2 text-gray-900">
+              {mapValue.schema}
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 };
@@ -59,13 +117,11 @@ const ContentElement = ({ content, onOpenModel }) => {
       </div>
       <div className="flex flex-row">{contentDescription}</div>
       <div className="px-6 py-3 italic">{contentComment}</div>
-      {content["@type"] !== "Component" && content.schema && (
-        <Kvp
-          keyName={"Schema"}
-          value={content.schema}
-          className="flex flex-row"
-        />
-      )}
+      {content["@type"] !== "Component" &&
+        content.schema &&
+        typeof content.schema === "object" && (
+          <ComplexSchema complexSchema={content.schema} />
+        )}
       {content["dtmi:dtdl:property:schema;2"] && (
         <ComplexSchema complexSchema={content["dtmi:dtdl:property:schema;2"]} />
       )}
@@ -90,6 +146,7 @@ const ContentElement = ({ content, onOpenModel }) => {
 };
 
 const ContentSection = ({ title, contents, onOpenModel }) => {
+  // eslint-disable-next-line
   const [items, setItems] = useState(contents ?? []);
   return (
     <>
@@ -139,7 +196,8 @@ const ExtendsSection = ({ model, onOpenModel }) => {
           </h2>
         </div>
       )}
-      {extenders && extenders.map((extend) => (
+      {extenders &&
+        extenders.map((extend) => (
           <ExtendItem item={extend} onOpenModel={onOpenModel} />
         ))}
     </>

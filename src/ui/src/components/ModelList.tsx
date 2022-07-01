@@ -37,7 +37,7 @@ const ModelHierarchyItem = ({ hierarchyItem, onItemClick }) => {
       className={`mt-3 mx-3 ${
         hierarchyItem.children.length === 0 ? "no-children" : "children"
       }`}
-    >
+    >      
       <summary className="cursor-pointer">
         <span onClick={() => onItemClick(hierarchyItem.model)}>
           {hierarchyItem.model.displayName} - {hierarchyItem.model.dtId}
@@ -69,10 +69,12 @@ export const ModelList: React.FC<IModelListProps> = ({
 
   const loadModels = async () => {
     setLoading(true);
-    const fieldApiUrl = `${process.env.REACT_APP_ontology_url}ModelIndex/OntologyModels?ontology=${ontology.owner}%2F${ontology.name}&includeModelDefinitions=false`;
+    const fieldApiUrl = `${process.env.REACT_APP_ontology_url}ModelIndex/OntologyModels?ontology=${ontology.owner.toLocaleLowerCase()}%2F${ontology.name.toLocaleLowerCase()}&includeModelDefinitions=false`;
+    console.log(fieldApiUrl);
     const response = await fetch(fieldApiUrl);
     const responseText = await response.text();
     setModels(JSON.parse(responseText).sort((a,b)=>{
+      console.log(a);
       const aName = a.displayName ?? a.dtId;
       const bName = b.displayName ?? b.dtId;
       return aName.localeCompare(bName);
@@ -125,10 +127,12 @@ export const ModelList: React.FC<IModelListProps> = ({
       });
 
     setModelHierarchy(hierarchy);
+    // eslint-disable-next-line
   }, [models]);
 
   useEffect(() => {
     loadModels();
+    // eslint-disable-next-line
   }, [ontology]);
 
   useEffect(() => {
