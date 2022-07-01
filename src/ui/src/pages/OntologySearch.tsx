@@ -130,6 +130,7 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
       }ModelIndex/Dtdl?ontology=${encodeURI(ontologyName)}&id=${encodeURI(
         modelId
       )}`;
+      console.log(modelApiUrl);
       if(!selectedOntology) await loadOntologyAsync(selectedResult.name.split("/")[0]+"/"+selectedResult.name.split("/")[1]);
       const response = await fetch(modelApiUrl);
       const data = await response.json();
@@ -344,6 +345,14 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
             <Model
               className="overflow-y-auto md:basis-1/2"
               model={selectedModel}
+              onOpenModel={(modelId) => {
+                
+                setSelectedResult({
+                  ontology: selectedOntology,
+                  type: "model",
+                  id: `${selectedOntology.owner}/${selectedOntology.name}/${modelId}`,
+                })
+              }}
               onModelClose={() => setSelectedModel(null)}
             />
           )}

@@ -72,7 +72,11 @@ export const ModelList: React.FC<IModelListProps> = ({
     const fieldApiUrl = `${process.env.REACT_APP_ontology_url}ModelIndex/OntologyModels?ontology=${ontology.owner}%2F${ontology.name}&includeModelDefinitions=false`;
     const response = await fetch(fieldApiUrl);
     const responseText = await response.text();
-    setModels(JSON.parse(responseText));
+    setModels(JSON.parse(responseText).sort((a,b)=>{
+      const aName = a.displayName ?? a.dtId;
+      const bName = b.displayName ?? b.dtId;
+      return aName.localeCompare(bName);
+    }));
     setLoading(false);
   };
 
@@ -284,7 +288,7 @@ export const ModelList: React.FC<IModelListProps> = ({
                         className="text-sm text-gray-900 font-light px-6 py-4 whitespace-nowrap align-text-top"
                         title={model.dtId}
                       >
-                        {model.displayName}
+                        {model.displayName ?? model.dtId}
                       </td>
                       <td className="text-sm text-gray-900 font-light px-6 py-4 ">
                         {modelDescription(model)}
