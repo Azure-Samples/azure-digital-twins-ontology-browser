@@ -18,4 +18,6 @@ This will deploy the following architecture into a resource group of your choice
 
 ![Architecture](./documents/architecture.png)
 
+You will then be able to navigate to the application and see the results of the ontology indexing.
+
 

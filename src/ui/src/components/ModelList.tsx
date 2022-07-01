@@ -162,7 +162,7 @@ export const ModelList: React.FC<IModelListProps> = ({
         const relationships = modelData.contents.filter(
           (m) => m["@type"] === "Relationship"
         );
-        console.log(relationships);
+        //console.log(relationships);
         relationships.forEach((relationship) => {
           let target = model.dtId;
           if (relationship.target) target = relationship.target;
@@ -208,6 +208,12 @@ export const ModelList: React.FC<IModelListProps> = ({
       layout.run();
     } catch (e) {}
   }, [graphControl, models]);
+
+  const modelDescription = (mdl) => {
+    return mdl.description && typeof mdl.description === "object"
+    ? mdl.description.en
+    : mdl.description
+  }
 
   return (
     <div className={className}>
@@ -281,7 +287,7 @@ export const ModelList: React.FC<IModelListProps> = ({
                         {model.displayName}
                       </td>
                       <td className="text-sm text-gray-900 font-light px-6 py-4 ">
-                        {model.description}
+                        {modelDescription(model)}
                       </td>
                     </tr>
                   ))}

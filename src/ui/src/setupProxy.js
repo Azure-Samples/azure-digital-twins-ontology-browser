@@ -141,13 +141,13 @@ module.exports = function (app) {
                     req.currentRetryAttempt = req.currentRetryAttempt
                         ? req.currentRetryAttempt++
                         : 1;
-                    console.log(
+                    //console.log(
                         'Proxy server retry request attempt number: ' +
                             req.currentRetryAttempt
                     );
                     blobProxy.call(blobProxy, req, res); // resend the original request to proxy middleware again
                 } else {
-                    console.log(
+                    //console.log(
                         'All proxy server retry attempts failed, returning error...'
                     );
                     res.status(504);

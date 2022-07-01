@@ -39,8 +39,6 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
       type: type,
       id: id
     };
-
-    console.log(urlSelectedOntology);
   }
 
   const [selectedResult, setSelectedResult] = useState(urlSelectedOntology);
@@ -68,14 +66,14 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
     const responseText = await response.text();
     const data = JSON.parse(responseText);
     if (data.suggestedOntologies.length > 0) {
-      results = data.suggestedOntologies.map((ontology) => {
+      results = data.suggestedOntologies.sort((a,b) => a.name.localeCompare(b.name)).map((ontology) => {
         return {
           id: ontology.name + "/",
           name: ontology.name,
           displayName: ontology.name,
           description: ontology.description,
           type: "ontology",
-          children: Object.keys(ontology.suggestedModels).map((modelId) => {
+          children: Object.keys(ontology.suggestedModels).sort().map((modelId) => {
             const model = ontology.suggestedModels[modelId];
             return {
               id: ontology.name + "/" + model.id,
@@ -97,6 +95,14 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
 
   const getOntologyList = () => {
     return indexState.ontologyIndexes
+      .sort((a,b) =>{
+        if(a.indexName.includes("Azure") && b.indexName.includes("Azure")) return  a.indexName.localeCompare(b.indexName);
+        if(a.indexName.includes("Azure"))
+          return -1;
+        if(b.indexName.includes("Azure"))
+          return 1;
+        return a.indexName.localeCompare(b.indexName);
+      })
       .filter(
         (index: any) =>
           !searchString ||
@@ -128,12 +134,10 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
       const response = await fetch(modelApiUrl);
       const data = await response.json();
       setSelectedModel(data);
-      console.log(data);
     };
 
     const loadOntologyAsync = async (ontologyName: string) => {
       if (selectedOntology && selectedOntology.name === ontologyName) return;
-      console.log(ontologyName);
       setLoadingOntology(true);
       setSelectedOntology(null);
       const modelApiUrl = `${
@@ -154,7 +158,6 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
     } else setSelectedOntology(null);
 
     if (selectedResult.type === "model") {
-      console.log(selectedResult.id);
       loadModelAsync(
         selectedResult.id.split("/")[0] + "/" + selectedResult.id.split("/")[1],
         selectedResult.id.split("/")[2]

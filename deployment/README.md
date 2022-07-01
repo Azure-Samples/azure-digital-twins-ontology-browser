@@ -65,4 +65,6 @@ You can verify the deployment by navigating to the resource group in the Azure p
 Once you have completed this you will need to deploy the API and UI Container to Azure using the steps below.
 
 [API Deployment](../src/api/README.md#deployment)
+
+
 [UI Deployment](../src/api/README.md#deployment)

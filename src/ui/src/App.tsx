@@ -1,6 +1,6 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import MainPanel from "./components/MainPanel";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Navigation from "./data/Navigation";
 import { initializeIcons, loadTheme } from "@fluentui/react";
 
