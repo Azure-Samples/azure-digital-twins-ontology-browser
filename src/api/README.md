@@ -34,8 +34,9 @@ Once this is done you can deploy the API Container to Azure using the steps belo
     docker push yourregistry.azurecr.io/ontology-browser-api:latest
     ```
 
-4. Restart the API App Service in the Azure Portal
+4. Set GitHub PAT Token 
 
+    Navigate to the Azure App Service for the api, and open the "Configuration" blade.  In here you'll find a setting called "GitHubToken" which is a personal access token for your GitHub account.  Put in your own PAT Token from GitHub, You can generate a token [here](https://github.com/settings/tokens).
 
 
 5. To access the API, navigate to the following URL:
