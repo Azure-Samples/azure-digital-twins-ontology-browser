@@ -25,7 +25,7 @@ Once this is done you can deploy the API Container to Azure using the steps belo
 2. Build the API Container
 
     ```cmd
-    docker build -t yourregistry.azurecr.io/ontology-browser-api:latest .
+    docker build -f Dockerfile -t yourregistry.azurecr.io/ontology-browser-api:latest .
     ```
 
     > **Note:** Make sure you have navigated to the api directory before running this command.

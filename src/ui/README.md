@@ -68,7 +68,7 @@ Then run the following commands to deploy the application to Azure:
     Then Containerize the application
 
     ```cmd
-    docker build -t yourregistry.azurecr.io/ontology-browser-ui:latest .
+    docker build -f Dockerfile -t yourregistry.azurecr.io/ontology-browser-ui:latest .
     ```
 
 3. Push the image to the container registry
