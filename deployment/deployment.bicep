@@ -239,14 +239,6 @@ resource ontologybrowserui 'Microsoft.Web/sites@2021-03-01' = {
           name: 'DOCKER_REGISTRY_SERVER_PASSWORD'
           value: '[ACR-ADMIN-PASSWORD-HERE]'
         }
-        {
-          name: 'REACT_APP_ontology_url'
-          value: 'https://${ontologybrowserapi.properties.defaultHostName}'
-        }
-        {
-          name: 'REACT_APP_TITLE'
-          value: 'Ontology Browser'
-        }
       ]
     }
     scmSiteAlsoStopped: false
