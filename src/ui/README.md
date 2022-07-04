@@ -18,17 +18,29 @@ This will start the application in development mode (http://localhost:3000).
 Inside this directory run using npm or yarn:
 
 **start** - runs the app in the development mode. Open http://localhost:3000 to view it in the browser.  
-**test** - launches the test runner in the interactive watch mode.  
 **build** - builds the app for production to the [./server/build](./server/build) folder.  
 **eject** - exposes content of react-script package  
 
 
 ## .env file parameters
 
+Before building add a .env file to the UI Directory with the following Parameters
+
 | Parameter | Description |
 |-----------|-------------|
 | REACT_APP_ontology_url | The url for the ontology server including trailing / e.g. https://digitaltwins-ontologies.azurewebsites.net/ |
 | REACT_APP_TITLE | The title of the application. |
+
+Example:
+
+```js
+
+require('dotenv').config();
+
+REACT_APP_ontology_url=[your-ontology-search-api-url]
+REACT_APP_TITLE=Azure Digital Twins Ontology Search
+
+```
 
 ## Deployment
 
