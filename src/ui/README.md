@@ -50,6 +50,8 @@ Then run the following commands to deploy the application to Azure:
     ```cmd
     npm run build
     ```
+    
+    > **Note:** Make sure you have navigated to the ui directory before running this command.
 
     Then Containerize the application
 
