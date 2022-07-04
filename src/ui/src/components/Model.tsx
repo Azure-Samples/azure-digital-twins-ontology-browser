@@ -12,6 +12,7 @@ export interface IModelProps {
 const ComplexSchema = ({ complexSchema }) => {
   const type = complexSchema["@type"] ?? complexSchema.schema;
   const isEnum = type.includes("Enum");
+  const isObject = type.includes("Object");
   const enumValues =
     complexSchema["dtmi:dtdl:property:enumValues;2"] ??
     complexSchema.enumValues ??
@@ -23,6 +24,10 @@ const ComplexSchema = ({ complexSchema }) => {
     complexSchema["dtmi:dtdl:property:mapValue;2"] ??
     complexSchema.mapValue ??
     "";
+  const displayName = typeof complexSchema.displayName === "object"? complexSchema.displayName.en : complexSchema.displayName;
+  const description = typeof complexSchema.description === "object"? complexSchema.description.en : complexSchema.description;
+  const comment = typeof complexSchema.comment === "object"? complexSchema.comment.en : complexSchema.comment;
+
   return (
     <div>
       <div>
@@ -30,12 +35,17 @@ const ComplexSchema = ({ complexSchema }) => {
       </div>
       <div>
         <span className=" leading-6 font-light text-gray-900">
-          {complexSchema.description}
+          {displayName}
+        </span>
+      </div>
+      <div>
+        <span className=" leading-6 font-light text-gray-900">
+          {description}
         </span>
       </div>
       <div>
         <span className=" leading-6 font-light italic text-gray-900">
-          {complexSchema.comment}
+          {comment}
         </span>
       </div>
       {isEnum && enumValues && (
@@ -75,7 +85,8 @@ const ComplexSchema = ({ complexSchema }) => {
               {mapKey.name}
             </span>
             <span className=" leading-6 font-light px-2 text-gray-900">
-              {mapKey.schema}
+              {typeof mapKey.schema === "object" && (<ComplexSchema complexSchema={mapKey.schema} />)}
+              {typeof mapKey.schema !== "object" && mapKey.schema}
             </span>
           </div>
           <div className="py-3">
@@ -84,11 +95,18 @@ const ComplexSchema = ({ complexSchema }) => {
               {mapValue.name}
             </span>
             <span className=" leading-6 font-light px-2 text-gray-900">
-              {mapValue.schema}
+              {typeof mapValue.schema === "object" && (<ComplexSchema complexSchema={mapValue.schema} />)}
+              {typeof mapValue.schema !== "object" && mapValue.schema}
             </span>
           </div>
         </>
       )}
+       <div>
+      {isObject && complexSchema.fields.length > 0 && ( <span className=" leading-6 font-medium text-gray-900">{}</span>) }
+      </div>
+      <div>
+      {isObject && (<ContentSection title={`Fields`} contents={complexSchema.fields} onOpenModel={() =>{}} />) }
+      </div>
     </div>
   );
 };
@@ -233,9 +251,6 @@ export const Model: React.FC<any> = ({
         : model.description
     );
     setModelName(name);
-
-    console.log(model.contents);
-
     setModelComment(
       model.comment && typeof model.comment === "object"
         ? model.comment.en
