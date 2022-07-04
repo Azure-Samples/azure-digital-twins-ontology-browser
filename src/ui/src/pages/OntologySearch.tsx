@@ -3,8 +3,8 @@ import { ChevronRightIcon, SearchIcon } from "@heroicons/react/solid";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Loading } from "../components/Loading";
-import { Model } from "../components/Model";
-import { ModelList } from "../components/ModelList";
+import { Model } from "../components/Model/Model";
+import { ModelList } from "../components/Model/ModelList";
 import { Ontology } from "../components/Ontology";
 
 export interface IOntologySearchProps {

@@ -5,14 +5,14 @@ import {
   GitGraphIcon,
 } from "@fluentui/react-icons-mdl2";
 import { isArray } from "util";
-import { Loading } from "./Loading";
+import { Loading } from "../Loading";
 import React from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 
 import {
   graphStyles
-} from "./Config";
-import {  dagreOptions } from "./CytoscapeConfig";
+} from "../Config";
+import {  dagreOptions } from "../CytoscapeConfig";
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
 import cola from "cytoscape-cola";
