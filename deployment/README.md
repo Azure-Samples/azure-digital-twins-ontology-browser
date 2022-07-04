@@ -67,4 +67,4 @@ Once you have completed this you will need to deploy the API and UI Container to
 [API Deployment](../src/api/README.md#deployment)
 
 
-[UI Deployment](../src/api/README.md#deployment)
+[UI Deployment](../src/ui/README.md#deployment)
