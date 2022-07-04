@@ -70,11 +70,9 @@ export const ModelList: React.FC<IModelListProps> = ({
   const loadModels = async () => {
     setLoading(true);
     const fieldApiUrl = `${process.env.REACT_APP_ontology_url}ModelIndex/OntologyModels?ontology=${ontology.owner.toLocaleLowerCase()}%2F${ontology.name.toLocaleLowerCase()}&includeModelDefinitions=false`;
-    console.log(fieldApiUrl);
     const response = await fetch(fieldApiUrl);
     const responseText = await response.text();
     setModels(JSON.parse(responseText).sort((a,b)=>{
-      console.log(a);
       const aName = a.displayName ?? a.dtId;
       const bName = b.displayName ?? b.dtId;
       return aName.localeCompare(bName);
@@ -170,7 +168,6 @@ export const ModelList: React.FC<IModelListProps> = ({
         const relationships = modelData.contents.filter(
           (m) => m["@type"] === "Relationship"
         );
-        //console.log(relationships);
         relationships.forEach((relationship) => {
           let target = model.dtId;
           if (relationship.target) target = relationship.target;

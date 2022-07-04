@@ -130,15 +130,17 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
       }ModelIndex/Dtdl?ontology=${encodeURI(ontologyName)}&id=${encodeURI(
         modelId
       )}`;
-      console.log(modelApiUrl);
-      if(!selectedOntology) await loadOntologyAsync(selectedResult.name.split("/")[0]+"/"+selectedResult.name.split("/")[1]);
+      if(!selectedOntology) await loadOntologyAsync(selectedResult.ontology.name, () => {});
       const response = await fetch(modelApiUrl);
       const data = await response.json();
       setSelectedModel(data);
     };
 
-    const loadOntologyAsync = async (ontologyName: string) => {
-      if (selectedOntology && selectedOntology.name === ontologyName) return;
+    const loadOntologyAsync = async (ontologyName: string, then: Function) => {
+      if (selectedOntology && selectedOntology.name === ontologyName){ 
+        then();
+        return;
+      }
       setLoadingOntology(true);
       setSelectedOntology(null);
       const modelApiUrl = `${
@@ -148,22 +150,28 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
       const data = await response.json();
       setSelectedOntology(data);
       setLoadingOntology(false);
+      then();
+    };
+
+    const tryLoadModelAsync = async () => {
+    if (selectedResult.type !== "model")
+    {
+      setSelectedModel(null)
+      return;
+    }
+    const ontologyId = selectedResult.id.split("/")[0] + "/" + selectedResult.id.split("/")[1];
+    const modelId = selectedResult.id.split("/")[2];
+    await loadModelAsync(ontologyId, modelId);
     };
 
     if (!selectedResult) return;
 
     if (selectedResult.ontology ) {
-      loadOntologyAsync(selectedResult.ontology.name);
+     loadOntologyAsync(selectedResult.ontology.name, tryLoadModelAsync);
     } else if (selectedResult.type === "ontology") {
-      loadOntologyAsync(selectedResult.name);
+      loadOntologyAsync(selectedResult.name, tryLoadModelAsync);
     } else setSelectedOntology(null);
-
-    if (selectedResult.type === "model") {
-      loadModelAsync(
-        selectedResult.id.split("/")[0] + "/" + selectedResult.id.split("/")[1],
-        selectedResult.id.split("/")[2]
-      );
-    } else setSelectedModel(null);
+    
     // eslint-disable-next-line
   }, [selectedResult, setSelectedModel]);
 
@@ -334,12 +342,14 @@ export const OntologySearch: React.FC<IOntologySearchProps> = ({
             <ModelList
               className="sm:flex-wrap md:basis-1/2"
               ontology={selectedOntology}
-              onItemClick={(i) =>
+              onItemClick={(i) => {
                 setSelectedResult({
                   ontology: selectedOntology,
                   type: "model",
                   id: `${selectedOntology.owner}/${selectedOntology.name}/${i.dtId}`,
                 })
+                console.log(selectedResult)
+              }
               }
             />
           )}
