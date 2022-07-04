@@ -5,5 +5,3 @@ appsettings.*.json
 .env
 
 _ontology_data
-
-node_modules
