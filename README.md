@@ -20,4 +20,5 @@ This will deploy the following architecture into a resource group of your choice
 
 You will then be able to navigate to the application and see the results of the ontology indexing.
 
+The Architecture above Searches Github for Open Ontologies "opendigitaltwins-" and indexes all the dtdl found in these ontologies using [Azure Cognitive Search](https://azure.microsoft.com/en-gb/services/search/#overview). These Ontolgies are then made searchable and browsable via an api which the React Browser App comminicates with.
 
