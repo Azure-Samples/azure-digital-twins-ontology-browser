@@ -82,7 +82,7 @@ Then run the following commands to deploy the application to Azure:
 5. To access the Application, navigate to the following URL:
 
     ```cmd
-    https://your-api.azurewebsites.net/
+    https://your-ui-application.azurewebsites.net/
     ```
 
 
