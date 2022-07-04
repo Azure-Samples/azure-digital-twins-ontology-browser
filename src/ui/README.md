@@ -21,7 +21,6 @@ Inside this directory run using npm or yarn:
 **build** - builds the app for production to the [./server/build](./server/build) folder.  
 **eject** - exposes content of react-script package  
 
-
 ## .env file parameters
 
 Before building add a .env file to the UI Directory with the following Parameters
@@ -63,8 +62,8 @@ Then run the following commands to deploy the application to Azure:
     npm run build
     ```
     
-    > **Note:** Make sure you have navigated to the ui directory before running this command.
-
+    > **Note:** Make sure you have navigated to the ui directory before running this command and that you have populated your .env file as mentioned in the previous section.
+    
     Then Containerize the application
 
     ```cmd
