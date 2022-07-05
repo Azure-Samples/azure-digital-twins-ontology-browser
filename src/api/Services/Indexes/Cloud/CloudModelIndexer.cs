@@ -81,9 +81,10 @@ namespace adt_ontology_index.Services.Indexes.Cloud
         }
       });
 
-      _searchClient.IndexDocuments(batch);
+      if(batch.Actions.Any())
+        _searchClient.IndexDocuments(batch);
 
-      return IndexedDocs();
+      return batch.Actions.Count;
     }
 
     public List<ModelScoreDoc> Search(params string[] terms)

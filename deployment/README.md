@@ -12,7 +12,6 @@ Tge following prerequisites must be installed before running the deployment scri
 
 ## Deployment
 
-
 To deploy the sample infrastructure you must follow the steps below.
 
 1. In the Visual Studio Code window, open the Bicep folder and run the following command:

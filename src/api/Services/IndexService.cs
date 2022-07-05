@@ -121,6 +121,7 @@ namespace adt_ontology_index.Services
 
       _logger.LogInformation("ReIndexing ontologies");
 
+     
       foreach (var ontology in ontologies)
         await IndexOntology(ontology, ontologyModels);
 
@@ -136,6 +137,15 @@ namespace adt_ontology_index.Services
       var models = await _ontologyAdapter.GetModelsForOntology(ontology);
       state.ModelCount = models.Count;
       state.IndexStatus = IndexStatuses.Indexing;
+
+      if(state.ModelCount == 0)
+      {
+        state.IndexStatus = IndexStatuses.NotIndexed;
+        _indexStatus.OntologyIndexes.Remove(state);
+        _logger.LogWarning("No Models Indexed for ontology " + ontology.Name);
+        return;
+      }
+
       var index = _modelIndexProvider.NewModelIndexer(ontology, state);
       _ontologyIndexer.AddIndex(ontology, index);
 
@@ -148,9 +158,17 @@ namespace adt_ontology_index.Services
 
       indexCount = index.IndexedDocs();
 
-      state.ModelCount = indexCount;
-      _indexStatus.ModelCount += indexCount;
-      state.IndexedModelCount = indexCount;
+      if(state.IndexedModelCount == 0)
+      {
+        state.IndexStatus = IndexStatuses.NotIndexed;
+        _indexStatus.OntologyIndexes.Remove(state);
+        _logger.LogWarning("No Models Indexed for ontology " + ontology.Name);
+        return;
+      }
+
+      state.ModelCount = models.Count();
+      _indexStatus.ModelCount += state.ModelCount;
+      state.IndexedModelCount = state.IndexedModelCount;
 
       state.IndexStatus = IndexStatuses.Indexed;
     }

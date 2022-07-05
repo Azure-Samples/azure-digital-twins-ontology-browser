@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using api.Adapters;
 using Octokit;
 
 namespace adt_ontology_index.Adapters
@@ -7,18 +8,13 @@ namespace adt_ontology_index.Adapters
   {
     private ILogger<GitHubAdapter> _logger;
     private GitHubClient _client;
+    private readonly List<string> _wellKnownOntologies;
 
-    private static List<string> KnownRepositories = new List<string>
-    {
-      "digitaltwinconsortium/ManufacturingDTDLOntologies",
-      "digitaltwinconsortium/XMPro-dtdl-data-models"
-    };
-    
-
-    public GitHubAdapter(ILogger<GitHubAdapter> logger, GitHubClient client)
+    public GitHubAdapter(ILogger<GitHubAdapter> logger, GitHubClient client, WellKnown wellKnown)
     {
       _logger = logger;
       _client = client;
+      _wellKnownOntologies = wellKnown.GetOntologies();
     }
 
     public async Task<Repository> GetDigitalTwinOntologyRepository(string name)
@@ -60,7 +56,7 @@ namespace adt_ontology_index.Adapters
       foreach (var repo in result.Items)
         await AddRepository(ontologies, repo);
 
-      foreach (var repo in KnownRepositories)
+      foreach (var repo in _wellKnownOntologies)
       {
         var owner = repo.Split("/")[0];
         var name = repo.Split("/")[1];
@@ -75,9 +71,19 @@ namespace adt_ontology_index.Adapters
     {
       try
       {
+        var ontologyDirectoryNames = new string []{"ontology", "ontologies", "models","dtdl" };
+
+        var topics = await _client.Repository.GetAllTopics(repo.Owner.Login, repo.Name);
+
+        if(topics.Names.Any(t => ontologyDirectoryNames.Any(o => t.ToLower().Contains(o))) || knownOntology)
+        {
+          ontologies.Add(repo);
+          return;
+        }
+
         IReadOnlyList<RepositoryContent> contents = await _client.Repository.Content.GetAllContents(repo.Owner.Login, repo.Name);
 
-        if (knownOntology || contents.Any(c => c.Name.Equals("ontology", StringComparison.OrdinalIgnoreCase) || contents.Any(c => c.Name.Equals("ontologies", StringComparison.OrdinalIgnoreCase))) || contents.Any(c => c.Name.Equals("models", StringComparison.OrdinalIgnoreCase)))
+        if (knownOntology || contents.Any(c => ontologyDirectoryNames.Any(d => c.Name.ToLower().Contains(d.ToLower()))))
           ontologies.Add(repo);
       }
       catch (Exception ex)
