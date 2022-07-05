@@ -141,6 +141,8 @@ namespace adt_ontology_index.Services
       if(state.ModelCount == 0)
       {
         state.IndexStatus = IndexStatuses.NotIndexed;
+        _indexStatus.OntologyIndexes.Remove(state);
+        _logger.LogWarning("No Models Indexed for ontology " + ontology.Name);
         return;
       }
 
@@ -156,7 +158,7 @@ namespace adt_ontology_index.Services
 
       indexCount = index.IndexedDocs();
 
-      if(indexCount == 0)
+      if(state.IndexedModelCount == 0)
       {
         state.IndexStatus = IndexStatuses.NotIndexed;
         _indexStatus.OntologyIndexes.Remove(state);
