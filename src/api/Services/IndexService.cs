@@ -166,9 +166,9 @@ namespace adt_ontology_index.Services
         return;
       }
 
-      state.ModelCount = indexCount;
-      _indexStatus.ModelCount += indexCount;
-      state.IndexedModelCount = indexCount;
+      state.ModelCount = models.Count();
+      _indexStatus.ModelCount += state.ModelCount;
+      state.IndexedModelCount = state.IndexedModelCount;
 
       state.IndexStatus = IndexStatuses.Indexed;
     }
