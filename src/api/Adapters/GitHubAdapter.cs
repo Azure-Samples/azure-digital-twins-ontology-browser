@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using api.Adapters;
 using Octokit;
 
 namespace adt_ontology_index.Adapters
@@ -7,18 +8,19 @@ namespace adt_ontology_index.Adapters
   {
     private ILogger<GitHubAdapter> _logger;
     private GitHubClient _client;
-
-    private static List<string> KnownRepositories = new List<string>
+    private readonly List<string> _wellKnownOntologies;
+    private static List<string> WellKnownRepositories = new List<string>
     {
       "digitaltwinconsortium/ManufacturingDTDLOntologies",
       "digitaltwinconsortium/XMPro-dtdl-data-models"
     };
     
 
-    public GitHubAdapter(ILogger<GitHubAdapter> logger, GitHubClient client)
+    public GitHubAdapter(ILogger<GitHubAdapter> logger, GitHubClient client, WellKnown wellKnown)
     {
       _logger = logger;
       _client = client;
+      _wellKnownOntologies = wellKnown.GetOntologies();
     }
 
     public async Task<Repository> GetDigitalTwinOntologyRepository(string name)
@@ -60,7 +62,7 @@ namespace adt_ontology_index.Adapters
       foreach (var repo in result.Items)
         await AddRepository(ontologies, repo);
 
-      foreach (var repo in KnownRepositories)
+      foreach (var repo in _wellKnownOntologies)
       {
         var owner = repo.Split("/")[0];
         var name = repo.Split("/")[1];

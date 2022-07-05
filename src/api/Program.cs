@@ -6,6 +6,7 @@ using adt_ontology_index.Services;
 using adt_ontology_index.Services.Cache;
 using adt_ontology_index.Services.Indexes;
 using adt_ontology_index.Services.Indexes.Cloud;
+using api.Adapters;
 using Azure;
 using Azure.Search.Documents.Indexes;
 using Microsoft.OpenApi.Models;
@@ -27,6 +28,7 @@ builder.Services.AddTransient<Credentials>(s =>
   return new Credentials(token);
 });
 builder.Services.AddTransient<GitHubClient>((s) => new GitHubClient(new ProductHeaderValue(Assembly.GetEntryAssembly().GetName().Name)) { Credentials = s.GetRequiredService<Credentials>() });
+builder.Services.AddTransient<WellKnown>((s) => new WellKnown {Ontologies = builder.Configuration.GetValue<string>("WellKnown:Ontologies")});
 builder.Services.AddSingleton<GitHubAdapter>();
 builder.Services.AddSingleton<FieldSuggestionCache>();
 builder.Services.AddSingleton<OntologyAdapter>();

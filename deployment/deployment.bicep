@@ -174,6 +174,10 @@ resource ontologybrowserapi 'Microsoft.Web/sites@2021-03-01' = {
           name: 'SearchToken'
           value: '[YOUR-SEARCH-SERVICE-TOKEN]'
         }
+        {
+          name: 'WellKnown__Ontologies'
+          value: 'digitaltwinconsortium/ManufacturingDTDLOntologies,digitaltwinconsortium/XMPro-dtdl-data-models'
+        }
       ]
     }
     scmSiteAlsoStopped: false
