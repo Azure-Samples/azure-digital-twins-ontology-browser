@@ -9,6 +9,9 @@ In order to run this application locally you will need to populate the following
   "GitHubToken":"[A GITHUB PAT TOKEN]",
   "SearchToken":"[A SEARCH TOKEN FROM YOUR AZURE COGNITIVE SEARCH]",
   "SearchEndpoint":"[THE URL FOR YOUR AZURE COGNITIVE SEARCH]",
+  "WellKnown" {
+    "Ontologies":"[The Github Repository containing the wellknown, (ones which won't be found by search) ontologies in the format owner/repo comma seperated]",
+  }
 
 ## Deployment
 

@@ -33,8 +33,10 @@ namespace adt_ontology_index.Adapters
       var archiveBytes = await _client.Repository.Content.GetArchive(owner, repo, ArchiveFormat.Zipball);
       var zip = new ZipArchive(new MemoryStream(archiveBytes));
       var readme = string.Empty;
-      var readmeEntry = zip.Entries.FirstOrDefault(r => r.Name.Equals("README.md", StringComparison.OrdinalIgnoreCase));
+      var readmes = zip.Entries.Where(r => r.Name.Equals("README.md", StringComparison.OrdinalIgnoreCase)).ToList();
+      var readmeEntry = readmes.FirstOrDefault(r => r.FullName.Count(s => s == '/') == 1) ?? readmes.FirstOrDefault();
       if (readmeEntry == null) return string.Empty;
+      
 
       using (var stream = readmeEntry.Open())
       {
