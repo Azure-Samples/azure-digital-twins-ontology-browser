@@ -28,7 +28,7 @@ namespace adt_ontology_index.Services.Indexes.Cloud
         return null;
       try
       {
-        id = GetDtmi(id).Replace(":", "-").Replace(";","_");
+        id = GetDtmi(id).Replace(":", "-").Replace(";", "_");
         var model = _searchClient.GetDocument<SearchableDigitalTwinModel>(id);
         return Regex.Unescape(model.Value.Dtdl);
       }
@@ -71,9 +71,9 @@ namespace adt_ontology_index.Services.Indexes.Cloud
         try
         {
           var searchableModel = SearchableDigitalTwinModel.FromModel(json);
-          if(string.IsNullOrWhiteSpace(searchableModel.DtId)) return;
+          if (string.IsNullOrWhiteSpace(searchableModel.DtId)) return;
           _logger.LogInformation("Indexing model {id}", searchableModel.DtId);
-          batch.Actions.Add(IndexDocumentsAction.MergeOrUpload(searchableModel));          
+          batch.Actions.Add(IndexDocumentsAction.MergeOrUpload(searchableModel));
         }
         catch (Exception e)
         {
@@ -81,7 +81,7 @@ namespace adt_ontology_index.Services.Indexes.Cloud
         }
       });
 
-      if(batch.Actions.Any())
+      if (batch.Actions.Any())
         _searchClient.IndexDocuments(batch);
 
       return batch.Actions.Count;
@@ -101,7 +101,7 @@ namespace adt_ontology_index.Services.Indexes.Cloud
     private List<ModelScoreDoc> SearchSingleTerm(string term)
     {
       var results = new List<ModelScoreDoc>();
-      var response = _searchClient.Search<SearchableDigitalTwinModel>("+"+term+"+");
+      var response = _searchClient.Search<SearchableDigitalTwinModel>("+" + term + "+", DefaultSearchOptions);
       foreach (var result in response.Value.GetResults())
       {
         var doc = result.Document;
@@ -119,7 +119,8 @@ namespace adt_ontology_index.Services.Indexes.Cloud
     public List<SearchableDigitalTwinModel> GetAllModels()
     {
       var results = new List<SearchableDigitalTwinModel>();
-      var response = _searchClient.Search<SearchableDigitalTwinModel>("*");
+      var response = _searchClient.Search<SearchableDigitalTwinModel>("*", DefaultSearchOptions);
+
       foreach (var result in response.Value.GetResults())
       {
         var doc = result.Document;
@@ -128,5 +129,11 @@ namespace adt_ontology_index.Services.Indexes.Cloud
 
       return results;
     }
+
+    private SearchOptions DefaultSearchOptions => new SearchOptions
+    {
+      Size = 10000,
+      IncludeTotalCount = true
+    };
   }
 }
